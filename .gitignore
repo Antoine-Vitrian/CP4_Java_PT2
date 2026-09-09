@@ -1,14 +1,14 @@
 target/
+out/
 .idea/
-lib/*.jar
+lib/*
+!lib/jdbc17.jar
 data/
 .env
 .env.*
 *.mv.db
 *.trace.db
-!.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
+*.class
 .kotlin
 
 ### IntelliJ IDEA ###

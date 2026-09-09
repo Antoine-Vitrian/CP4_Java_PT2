@@ -1,34 +1,24 @@
 # Sistema de gestão de delegacia
 
-Projeto Java 17 com JDBC e DAOs para cadastro, listagem, busca, alteração e exclusão de policiais.
+Projeto Java 17 com JDBC e DAOs para cadastro, listagem, busca, alteração e exclusão de policiais. O driver está em `lib/jdbc17.jar` — sem Maven.
 
-## Executar sem instalar Oracle
+## Configuração
 
-O banco padrão é o H2 embarcado: roda junto com o Java e salva os dados em `data/delegacia.mv.db`. As tabelas são criadas automaticamente. No primeiro uso, uma delegacia de demonstração é criada com ID **1**, que pode ser usado no cadastro de policiais.
+1. Edite `src/main/java/br/com/fiap/delegacia/database/ConnectionFactory.java` e troque `RMXXXXXX` e `XXXXXX` pelo seu RM e senha do Oracle FIAP.
+2. O driver JDBC está em `lib/jdbc17.jar`.
+3. Crie as tabelas no Oracle com o script `sql/delegacia.sql`, se ainda não existirem.
 
-No IntelliJ IDEA, abra o `pom.xml` como projeto Maven, selecione o JDK 17, recarregue as dependências Maven e execute `br.com.fiap.delegacia.Main`. Use a raiz do projeto como diretório de trabalho.
+Também é possível definir `DB_URL`, `DB_USER` e `DB_PASSWORD` por variável de ambiente, sem alterar o código.
 
-Com Java 17 e Maven no terminal:
+## Como executar
 
-```sh
-mvn compile exec:java
-```
+No IntelliJ, abra a pasta do projeto (não use Maven), marque `lib/jdbc17.jar` como dependência do módulo e execute `br.com.fiap.delegacia.Main`. Use JDK 17.
 
-O primeiro carregamento das dependências precisa de internet. Os dados locais e arquivos da IDE não são enviados ao GitHub. O JAR em `lib/` não é necessário: os drivers são obtidos pelo Maven.
-
-## Usar Oracle opcionalmente
-
-Configure as variáveis de ambiente na execução do IntelliJ ou no terminal. Exemplo em PowerShell:
+Pelo terminal (Windows), a partir da raiz do projeto:
 
 ```powershell
-$env:DB_URL = 'jdbc:oracle:thin:@servidor:1521/servico'
-$env:DB_USER = 'seu_usuario'
-$env:DB_PASSWORD = 'sua_senha'
-mvn compile exec:java
+javac -encoding UTF-8 -cp lib/jdbc17.jar -d out (Get-ChildItem -Recurse src/main/java/*.java).FullName
+java -cp "out;lib/jdbc17.jar" br.com.fiap.delegacia.Main
 ```
 
-É necessário ter acesso a um servidor Oracle com as tabelas `delegacia` e `policial` e geração automática dos IDs já configuradas. O servidor pode ser remoto; não precisa estar instalado neste computador. A criação automática de tabelas é exclusiva do H2. Não coloque credenciais no código.
-
-O H2 permite usar o sistema localmente, mas não substitui a validação em Oracle caso esse banco seja exigido na atividade.
-
-Referência: [documentação do H2 sobre execução embarcada](https://h2database.com/html/features.html#embedded_databases).
+É necessário estar na rede/VPN da FIAP para alcançar `oracle.fiap.com.br`.
