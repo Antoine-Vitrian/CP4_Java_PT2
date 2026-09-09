@@ -12,13 +12,11 @@ Também é possível definir `DB_URL`, `DB_USER` e `DB_PASSWORD` por variável d
 
 ## Como executar
 
-No IntelliJ, abra a pasta do projeto (não use Maven), marque `lib/jdbc17.jar` como dependência do módulo e execute `br.com.fiap.delegacia.Main`. Use JDK 17.
+No IntelliJ:
 
-Pelo terminal (Windows), a partir da raiz do projeto:
-
-```powershell
-javac -encoding UTF-8 -cp lib/jdbc17.jar -d out (Get-ChildItem -Recurse src/main/java/*.java).FullName
-java -cp "out;lib/jdbc17.jar" br.com.fiap.delegacia.Main
-```
+1. Abra a pasta `delegacia` (File → Open).
+2. Selecione JDK 17 em File → Project Structure → Project.
+3. Abra `src/main/java/br/com/fiap/delegacia/Main.java`.
+4. Clique com o botão direito → **Run 'Main.main()'**, ou use a configuração **Main** no canto superior direito.
 
 É necessário estar na rede/VPN da FIAP para alcançar `oracle.fiap.com.br`.

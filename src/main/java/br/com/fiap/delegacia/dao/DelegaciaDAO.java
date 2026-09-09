@@ -27,18 +27,30 @@ public class DelegaciaDAO {
             throw new PolicialException("O endereço da delegacia é obrigatório.");
         }
 
+        String sqlId = "SELECT seq_delegacia.NEXTVAL FROM dual";
         String sql = """
-                INSERT INTO delegacia (nome, endereco)
-                VALUES (?, ?)
+                INSERT INTO delegacia (id, nome, endereco)
+                VALUES (?, ?, ?)
                 """;
 
-        try (Connection connection = connectionFactory.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (Connection connection = connectionFactory.getConnection()) {
+            long id;
 
-            statement.setString(1, delegacia.getNome());
-            statement.setString(2, delegacia.getEndereco());
+            try (PreparedStatement idStatement = connection.prepareStatement(sqlId);
+                 ResultSet result = idStatement.executeQuery()) {
+                if (!result.next()) {
+                    throw new PolicialException("Nao foi possivel gerar o ID da delegacia.");
+                }
+                id = result.getLong(1);
+            }
 
-            statement.executeUpdate();
+            try (PreparedStatement statement = connection.prepareStatement(sql)) {
+                statement.setLong(1, id);
+                statement.setString(2, delegacia.getNome());
+                statement.setString(3, delegacia.getEndereco());
+                statement.executeUpdate();
+            }
+            delegacia.setId(id);
 
         } catch (SQLException e) {
             throw new PolicialException(

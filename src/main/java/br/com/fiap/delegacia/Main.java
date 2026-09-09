@@ -4,6 +4,7 @@ import br.com.fiap.delegacia.dao.DelegaciaDAO;
 import br.com.fiap.delegacia.dao.PolicialDAO;
 import br.com.fiap.delegacia.exception.PolicialException;
 import br.com.fiap.delegacia.factory.DAOFactory;
+import br.com.fiap.delegacia.model.Delegacia;
 import br.com.fiap.delegacia.model.Policial;
 
 import java.util.List;
@@ -114,6 +115,11 @@ public class Main {
 
             System.out.print("Cargo: ");
             String cargo = scanner.nextLine();
+
+            System.out.println("\nDelegacias disponiveis:");
+            for (Delegacia delegacia : delegaciaDAO.listar()) {
+                System.out.println("  ID " + delegacia.getId() + " - " + delegacia.getNome());
+            }
 
             System.out.print("ID da delegacia: ");
             Long delegaciaId = scanner.nextLong();

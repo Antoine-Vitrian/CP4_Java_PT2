@@ -43,22 +43,34 @@ public class PolicialDAO {
             throw new PolicialException("A delegacia deve ser informada.");
         }
 
+        String sqlId = "SELECT seq_policial.NEXTVAL FROM dual";
         String sql = """
                 INSERT INTO policial
-                (nome, cpf, matricula, cargo, delegacia_id)
-                VALUES (?, ?, ?, ?, ?)
+                (id, nome, cpf, matricula, cargo, delegacia_id)
+                VALUES (?, ?, ?, ?, ?, ?)
                 """;
 
-        try (Connection connection = connectionFactory.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (Connection connection = connectionFactory.getConnection()) {
+            long id;
 
-            statement.setString(1, policial.getNome());
-            statement.setString(2, policial.getCpf());
-            statement.setString(3, policial.getMatricula());
-            statement.setString(4, policial.getCargo());
-            statement.setLong(5, policial.getDelegaciaId());
+            try (PreparedStatement idStatement = connection.prepareStatement(sqlId);
+                 ResultSet result = idStatement.executeQuery()) {
+                if (!result.next()) {
+                    throw new PolicialException("Nao foi possivel gerar o ID do policial.");
+                }
+                id = result.getLong(1);
+            }
 
-            statement.executeUpdate();
+            try (PreparedStatement statement = connection.prepareStatement(sql)) {
+                statement.setLong(1, id);
+                statement.setString(2, policial.getNome());
+                statement.setString(3, policial.getCpf());
+                statement.setString(4, policial.getMatricula());
+                statement.setString(5, policial.getCargo());
+                statement.setLong(6, policial.getDelegaciaId());
+                statement.executeUpdate();
+            }
+            policial.setId(id);
 
         } catch (SQLException e) {
             throw new PolicialException(

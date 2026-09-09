@@ -1,8 +1,6 @@
 target/
 out/
-.idea/
-lib/*
-!lib/jdbc17.jar
+build/
 data/
 .env
 .env.*
@@ -12,12 +10,12 @@ data/
 .kotlin
 
 ### IntelliJ IDEA ###
-.idea/modules.xml
-.idea/jarRepositories.xml
-.idea/compiler.xml
-.idea/libraries/
+.idea/shelf/
+.idea/workspace.xml
+.idea/usage.statistics.xml
+.idea/dictionaries/
+.idea/httpRequests/
 *.iws
-*.iml
 *.ipr
 
 ### Eclipse ###
@@ -35,9 +33,6 @@ data/
 /dist/
 /nbdist/
 /.nb-gradle/
-build/
-!**/src/main/**/build/
-!**/src/test/**/build/
 
 ### VS Code ###
 .vscode/
